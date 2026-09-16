@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping ("/api/debug")
 public class DebugController {
     @GetMapping ("/hello")
-    public String Hello(){
+    public String hello(){
         return "Hello";
     }
 }
