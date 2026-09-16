@@ -1,13 +1,13 @@
-package top.productivitytools.fitness.exercises;
+package top.productivitytools.fitness.exercises.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ExercisesApplication {
+public class ExercisesApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ExercisesApplication.class, args);
+		SpringApplication.run(ExercisesApiApplication.class, args);
 	}
 
 }
