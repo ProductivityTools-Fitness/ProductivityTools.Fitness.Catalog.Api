@@ -1,4 +1,4 @@
-package top.productivitytools.fitness.exercises.api.controllers;
+package top.productivitytools.fitness.catalog.api.controllers;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
