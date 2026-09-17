@@ -1,0 +1,17 @@
+[Unit]
+Description=Fitness Exercises Service
+After=syslog.target network.target
+
+[Service]
+User=USER_PLACEHOLDER
+EnvironmentFile=-/opt/PT.Fitness-Exercises/fitness-exercises.env
+ExecStart=/usr/bin/java -jar /opt/PT.Fitness-Exercises/exercises-0.0.1-SNAPSHOT.jar
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+SuccessExitStatus=143
+TimeoutStopSec=10
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
