@@ -41,6 +41,11 @@ jobs:
         cache: 'gradle'
 
     - name: Build with Gradle
+      env:
+        SERVER_PORT: ${{ matrix.server-port }}
+        DB_URL: ${{ matrix.db-url }}
+        DB_USERNAME: ${{ matrix.db-user }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       run: |
         chmod +x gradlew
         ./gradlew --stop
