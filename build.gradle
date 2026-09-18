@@ -34,7 +34,7 @@ dependencies {
 }
 
 tasks.named('bootJar') {
-	archiveBaseName = 'Fitness.Catalog.Api'
+	archiveBaseName = 'fitness-catalog-api'
 }
 
 tasks.named('test') {

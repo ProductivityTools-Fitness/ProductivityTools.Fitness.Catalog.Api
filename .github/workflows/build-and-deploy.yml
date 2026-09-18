@@ -51,16 +51,16 @@ jobs:
         echo "Stopping application"
         sudo systemctl stop fitness-catalog-api || true
 
-    - name: Copy Jar to /opt/Fitness.Catalog.Api
+    - name: Copy Jar to /opt/fitness-catalog-api
       run: |
-        echo "Copying JAR to /opt/Fitness.Catalog.Api"
+        echo "Copying JAR to /opt/fitness-catalog-api"
         umask 002
-        JAR=build/libs/Fitness.Catalog.Api-0.0.1-SNAPSHOT.jar
+        JAR=build/libs/fitness-catalog-api-0.0.1-SNAPSHOT.jar
         if [ ! -f "$JAR" ]; then
           echo "Jar not found at $JAR"; exit 1
         fi
-        sudo mkdir -p /opt/Fitness.Catalog.Api
-        sudo cp "$JAR" /opt/Fitness.Catalog.Api/
+        sudo mkdir -p /opt/fitness-catalog-api
+        sudo cp "$JAR" /opt/fitness-catalog-api/
 
     - name: Configure environment variables and systemd service
       env:
@@ -72,18 +72,18 @@ jobs:
         echo "Configuring environment variables and systemd service file..."
         
         # 1. Create secure environment file with runner-specific configuration
-        cat << EOF > /tmp/Fitness.Catalog.Api.env
+        cat << EOF > /tmp/fitness-catalog-api.env
         SERVER_PORT=$SERVER_PORT
         DB_URL=$DB_URL
         DB_USERNAME=$DB_USER
         EOF
 
         if [ -n "$DB_PASS" ]; then
-          echo "DB_PASSWORD=$DB_PASS" >> /tmp/Fitness.Catalog.Api.env
+          echo "DB_PASSWORD=$DB_PASS" >> /tmp/fitness-catalog-api.env
         fi
 
-        sudo mv /tmp/Fitness.Catalog.Api.env /opt/Fitness.Catalog.Api/Fitness.Catalog.Api.env
-        sudo chmod 600 /opt/Fitness.Catalog.Api/Fitness.Catalog.Api.env
+        sudo mv /tmp/fitness-catalog-api.env /opt/fitness-catalog-api/fitness-catalog-api.env
+        sudo chmod 600 /opt/fitness-catalog-api/fitness-catalog-api.env
 
         # 2. Configure and install systemd service
         CURRENT_USER=$(whoami)

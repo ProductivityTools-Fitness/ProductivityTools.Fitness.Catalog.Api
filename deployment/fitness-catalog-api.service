@@ -1,11 +1,11 @@
 [Unit]
-Description=Fitness.Catalog.Api Service
+Description=Fitness Catalog API Service
 After=syslog.target network.target
 
 [Service]
 User=USER_PLACEHOLDER
-EnvironmentFile=-/opt/Fitness.Catalog.Api/Fitness.Catalog.Api.env
-ExecStart=/usr/bin/java -jar /opt/Fitness.Catalog.Api/Fitness.Catalog.Api-0.0.1-SNAPSHOT.jar
+EnvironmentFile=-/opt/fitness-catalog-api/fitness-catalog-api.env
+ExecStart=/usr/bin/java -jar /opt/fitness-catalog-api/fitness-catalog-api-0.0.1-SNAPSHOT.jar
 AmbientCapabilities=CAP_NET_BIND_SERVICE
 CapabilityBoundingSet=CAP_NET_BIND_SERVICE
 SuccessExitStatus=143
