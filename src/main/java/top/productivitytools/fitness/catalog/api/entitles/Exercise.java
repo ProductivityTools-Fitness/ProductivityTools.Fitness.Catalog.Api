@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,9 +17,6 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Encja odpowiadajaca tabeli "exercise" (V1__Create_Exercise_And_Image_Tables.sql).
- */
 @Entity
 @Table(name = "exercise")
 @Getter
@@ -72,6 +70,13 @@ public class Exercise {
     @Column(name = "image_file_name", length = 255)
     private String imageFileName;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt = OffsetDateTime.now();
+
+    @PrePersist
+    void onPrePersist() {
+        if (createdAt == null) {
+            createdAt = OffsetDateTime.now();
+        }
+    }
 }

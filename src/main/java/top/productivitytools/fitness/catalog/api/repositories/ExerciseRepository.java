@@ -1,9 +1,13 @@
 package top.productivitytools.fitness.catalog.api.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import top.productivitytools.fitness.catalog.api.entitles.Exercise;;
+import java.util.Optional;
 
-@Repository 
-public interface ExerciseRepository extends JpaRepository<Exercise,Long> {
-} 
+import org.springframework.data.jpa.repository.JpaRepository;
+import top.productivitytools.fitness.catalog.api.entitles.Exercise;
+
+public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
+
+    Optional<Exercise> findByExternalId(String externalId);
+
+    boolean existsByExternalId(String externalId);
+}
