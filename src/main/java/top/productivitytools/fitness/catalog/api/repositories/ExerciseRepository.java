@@ -7,7 +7,7 @@ import top.productivitytools.fitness.catalog.api.entitles.Exercise;
 
 public interface ExerciseRepository extends JpaRepository<Exercise, Long> {
 
-    Optional<Exercise> findByExternalId(String externalId);
+    Optional<Exercise> findByExerciseId(String exerciseId);
 
-    boolean existsByExternalId(String externalId);
+    boolean existsByExerciseId(String exerciseId);
 }
