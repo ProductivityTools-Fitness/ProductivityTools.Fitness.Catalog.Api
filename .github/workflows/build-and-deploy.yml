@@ -8,7 +8,7 @@ on:
 jobs:
   build-and-deploy:
     strategy:
-      fail-fast: false # Pozwala jednemu runnerowi dokończyć wdrożenie nawet jeśli drugi napotka błąd
+      fail-fast: false # Allow one runner to finish deployment even if the other encounters an error
       matrix:
         include:
           - target-runner: "fitness-catalog-api"

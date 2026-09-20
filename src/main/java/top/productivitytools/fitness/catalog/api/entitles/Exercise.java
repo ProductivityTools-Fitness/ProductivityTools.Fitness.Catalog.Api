@@ -29,10 +29,7 @@ public class Exercise {
     @Column(name = "id")
     private Long id;
 
-    // Business key coming from exercises.json. The column keeps the name external_id
-    // because exercise_image.exercise_id already means "foreign key to exercise.id",
-    // and reusing that name here would make the two very easy to confuse.
-    @Column(name = "external_id", nullable = false, unique = true, length = 150)
+    @Column(name = "exercise_id", nullable = false, unique = true, length = 150)
     private String exerciseId;
 
     @Column(name = "name", nullable = false, length = 255)

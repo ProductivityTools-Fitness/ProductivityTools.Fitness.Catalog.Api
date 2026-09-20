@@ -1,14 +1,14 @@
 -- ==============================================================================
--- Skrypt czyszczący bazę danych ptfitness-catalog
+-- Database cleanup script for ptfitness-catalog
 -- ==============================================================================
 
--- OPCJA 1: Wyczyszczenie samych danych (z zachowaniem struktur tabel i historii Flyway)
--- Resetuje liczniki BIGSERIAL (RESTART IDENTITY) i czyści powiązane rekordy (CASCADE).
+-- OPTION 1: Clear table data only (preserving table structures and Flyway history)
+-- Resets BIGSERIAL sequences (RESTART IDENTITY) and removes dependent rows (CASCADE).
 TRUNCATE TABLE exercise_image, exercise RESTART IDENTITY CASCADE;
 
--- OPCJA 2: Całkowite wyczyszczenie schematu (wraz z tabelą flyway_schema_history)
--- Odkomentuj poniższe linie, jeśli chcesz, aby Flyway przy kolejnym uruchomieniu
--- aplikacji odtworzył wszystkie tabele od zera:
+-- OPTION 2: Full schema reset (including flyway_schema_history table)
+-- Uncomment the lines below if you want Flyway to recreate all tables from scratch
+-- on the next application startup:
 --
 -- DROP SCHEMA public CASCADE;
 -- CREATE SCHEMA public;
