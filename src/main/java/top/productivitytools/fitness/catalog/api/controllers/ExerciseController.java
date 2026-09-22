@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
+import top.productivitytools.fitness.catalog.api.dto.ExerciseSearchResultDto;
 import top.productivitytools.fitness.catalog.api.entitles.Exercise;
 import top.productivitytools.fitness.catalog.api.entitles.ExerciseImage;
 import top.productivitytools.fitness.catalog.api.services.ExerciseImageService;
@@ -46,6 +48,35 @@ public class ExerciseController {
     @GetMapping("/{id}")
     public ResponseEntity<Exercise> getById(@PathVariable Long id) {
         return exerciseService.findById(id)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    /**
+     * Searches the catalog. All three criteria are optional and combine with AND.
+     *
+     * <p>Example: {@code /api/exercises/search?name=plank&bodyPart=waist&limit=20}
+     */
+    @GetMapping("/search")
+    public List<ExerciseSearchResultDto> search(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String bodyPart,
+            @RequestParam(required = false) String equipment,
+            @RequestParam(defaultValue = "50") int limit) {
+        return exerciseService.search(name, bodyPart, equipment, limit).stream()
+                .map(ExerciseSearchResultDto::from)
+                .toList();
+    }
+
+    /**
+     * Looks an exercise up by the business key from exercises.json (for example
+     * {@code exdb_plank}), as opposed to {@link #getById(Long)} which uses the generated
+     * numeric id. Consumers that came from a search only know the business key.
+     */
+    @GetMapping("/by-exercise-id/{exerciseId}")
+    public ResponseEntity<ExerciseSearchResultDto> getByExerciseId(@PathVariable String exerciseId) {
+        return exerciseService.findByExerciseId(exerciseId)
+                .map(ExerciseSearchResultDto::from)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
