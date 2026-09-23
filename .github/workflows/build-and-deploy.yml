@@ -100,4 +100,6 @@ jobs:
     - name: Start application
       run: |
         echo "Starting application"
-        sudo systemctl start fitness-catalog-api
+        # enable, not just start: without it the service would not come back after a VM reboot
+        sudo systemctl enable --now fitness-catalog-api
+        sudo systemctl restart fitness-catalog-api
