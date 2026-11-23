@@ -21,7 +21,9 @@ public class CorsConfig implements WebMvcConfigurer {
             Stream.of(
                     "https://service-status.productivitytools.top",
                     "https://pt-service-status-93484780890.us-central1.run.app",
-                    "https://pts-fitness.web.app"
+                    "https://pts-fitness.web.app",
+                    "https://pt-fitness-catalog.web.app",
+                    "https://pt-fitness-catalog.firebaseapp.com"
             ),
             IntStream.rangeClosed(4200, 4300)
                     .boxed()
