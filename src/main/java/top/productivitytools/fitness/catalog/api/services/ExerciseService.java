@@ -1,5 +1,6 @@
 package top.productivitytools.fitness.catalog.api.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
+import top.productivitytools.fitness.catalog.api.dto.UpdateExerciseRequest;
 import top.productivitytools.fitness.catalog.api.entitles.Exercise;
 import top.productivitytools.fitness.catalog.api.repositories.ExerciseRepository;
 
@@ -37,6 +39,62 @@ public class ExerciseService {
     @Transactional(readOnly = true)
     public Optional<Exercise> findByExerciseId(String exerciseId) {
         return exerciseRepository.findByExerciseId(exerciseId);
+    }
+
+    @Transactional
+    public Optional<Exercise> updateByExerciseId(String exerciseId, UpdateExerciseRequest request) {
+        return exerciseRepository.findByExerciseId(exerciseId).map(exercise -> {
+            exercise.setName(request.name().trim());
+
+            List<String> bodyParts = cleanList(request.bodyParts());
+            String primaryBodyPart = normalize(request.primaryBodyPart());
+            if (primaryBodyPart == null && !bodyParts.isEmpty()) {
+                primaryBodyPart = bodyParts.get(0);
+            } else if (primaryBodyPart != null && bodyParts.isEmpty()) {
+                bodyParts.add(primaryBodyPart);
+            }
+            exercise.setPrimaryBodyPart(primaryBodyPart);
+            exercise.setBodyParts(bodyParts);
+
+            List<String> equipments = cleanList(request.equipments());
+            String primaryEquipment = normalize(request.primaryEquipment());
+            if (primaryEquipment == null && !equipments.isEmpty()) {
+                primaryEquipment = equipments.get(0);
+            } else if (primaryEquipment != null && equipments.isEmpty()) {
+                equipments.add(primaryEquipment);
+            }
+            exercise.setPrimaryEquipment(primaryEquipment);
+            exercise.setEquipments(equipments);
+
+            List<String> targetMuscles = cleanList(request.targetMuscles());
+            String primaryMuscle = normalize(request.primaryMuscle());
+            if (primaryMuscle == null && !targetMuscles.isEmpty()) {
+                primaryMuscle = targetMuscles.get(0);
+            } else if (primaryMuscle != null && targetMuscles.isEmpty()) {
+                targetMuscles.add(primaryMuscle);
+            }
+            exercise.setPrimaryMuscle(primaryMuscle);
+            exercise.setTargetMuscles(targetMuscles);
+
+            exercise.setSecondaryMuscles(cleanList(request.secondaryMuscles()));
+            exercise.setInstructions(cleanList(request.instructions()));
+
+            return exerciseRepository.save(exercise);
+        });
+    }
+
+    private static List<String> cleanList(List<String> values) {
+        List<String> cleaned = new ArrayList<>();
+        if (values == null) {
+            return cleaned;
+        }
+        for (String v : values) {
+            String trimmed = normalize(v);
+            if (trimmed != null) {
+                cleaned.add(trimmed);
+            }
+        }
+        return cleaned;
     }
 
     /**

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,6 +22,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
 import top.productivitytools.fitness.catalog.api.dto.ExerciseSearchResultDto;
+import top.productivitytools.fitness.catalog.api.dto.UpdateExerciseRequest;
 import top.productivitytools.fitness.catalog.api.entitles.Exercise;
 import top.productivitytools.fitness.catalog.api.entitles.ExerciseImage;
 import top.productivitytools.fitness.catalog.api.services.ExerciseImageService;
@@ -76,6 +78,19 @@ public class ExerciseController {
     @GetMapping("/by-exercise-id/{exerciseId}")
     public ResponseEntity<ExerciseSearchResultDto> getByExerciseId(@PathVariable String exerciseId) {
         return exerciseService.findByExerciseId(exerciseId)
+                .map(ExerciseSearchResultDto::from)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/by-exercise-id/{exerciseId}")
+    public ResponseEntity<ExerciseSearchResultDto> updateByExerciseId(
+            @PathVariable String exerciseId,
+            @RequestBody UpdateExerciseRequest request) {
+        if (request == null || request.name() == null || request.name().isBlank()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exercise name must not be blank");
+        }
+        return exerciseService.updateByExerciseId(exerciseId, request)
                 .map(ExerciseSearchResultDto::from)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
